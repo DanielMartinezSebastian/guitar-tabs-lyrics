@@ -76,6 +76,8 @@ export function SongReader({
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(DEFAULT_SPEED);
   const lastFrameTime = useRef<number | null>(null);
+  const bottomPanelRef = useRef<HTMLDivElement>(null);
+  const [bottomPanelHeight, setBottomPanelHeight] = useState(0);
 
   useEffect(() => {
     if (!playing) return;
@@ -97,18 +99,21 @@ export function SongReader({
     };
   }, [playing, speed]);
 
+  useEffect(() => {
+    const panel = bottomPanelRef.current;
+    if (!panel) return;
+
+    const updateHeight = () => setBottomPanelHeight(panel.offsetHeight);
+    updateHeight();
+
+    const resizeObserver = new ResizeObserver(updateHeight);
+    resizeObserver.observe(panel);
+    return () => resizeObserver.disconnect();
+  }, [legendVisible, chords.length]);
+
   return (
     <>
-      <ChordLegend
-        chords={chords}
-        dictionary={dictionary}
-        instrument={instrument}
-        highlightedChord={highlightedChord}
-        visible={legendVisible}
-        onToggleVisible={() => setLegendVisible((visible) => !visible)}
-      />
-
-      <div className="flex-1 px-4 py-6 pb-28" style={{ fontSize }}>
+      <div className="flex-1 px-4 py-6" style={{ fontSize, paddingBottom: bottomPanelHeight }}>
         {capo ? (
           <p className="mb-4 font-sans text-sm text-text-secondary">
             Capo: {capo}
@@ -121,48 +126,59 @@ export function SongReader({
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-border bg-surface/95 px-4 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-center gap-4">
-          <Button
-            size="icon"
-            variant="outline"
-            onClick={() => setPlaying((value) => !value)}
-            aria-label={playing ? "Pausar autoscroll" : "Iniciar autoscroll"}
-          >
-            {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-          </Button>
+      <div ref={bottomPanelRef} className="fixed inset-x-0 bottom-0 z-10">
+        <ChordLegend
+          chords={chords}
+          dictionary={dictionary}
+          instrument={instrument}
+          highlightedChord={highlightedChord}
+          visible={legendVisible}
+          onToggleVisible={() => setLegendVisible((visible) => !visible)}
+        />
 
-          <Slider
-            value={[speed]}
-            min={MIN_SPEED}
-            max={MAX_SPEED}
-            step={5}
-            onValueChange={([value]) => setSpeed(value)}
-            className={cn(!playing && "opacity-50")}
-            aria-label="Velocidad de autoscroll"
-          />
-
-          <div className="flex items-center gap-1">
+        <div className="border-t border-border bg-surface/95 px-4 py-3 backdrop-blur">
+          <div className="mx-auto flex max-w-2xl items-center gap-4">
             <Button
               size="icon"
-              variant="ghost"
-              onClick={() =>
-                setFontSize((size) => Math.max(MIN_FONT_SIZE, size - FONT_SIZE_STEP))
-              }
-              aria-label="Reducir tamaño de letra"
+              variant="outline"
+              onClick={() => setPlaying((value) => !value)}
+              aria-label={playing ? "Pausar autoscroll" : "Iniciar autoscroll"}
             >
-              <Minus className="h-4 w-4" />
+              {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
             </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() =>
-                setFontSize((size) => Math.min(MAX_FONT_SIZE, size + FONT_SIZE_STEP))
-              }
-              aria-label="Aumentar tamaño de letra"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
+
+            <Slider
+              value={[speed]}
+              min={MIN_SPEED}
+              max={MAX_SPEED}
+              step={5}
+              onValueChange={([value]) => setSpeed(value)}
+              className={cn(!playing && "opacity-50")}
+              aria-label="Velocidad de autoscroll"
+            />
+
+            <div className="flex items-center gap-1">
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() =>
+                  setFontSize((size) => Math.max(MIN_FONT_SIZE, size - FONT_SIZE_STEP))
+                }
+                aria-label="Reducir tamaño de letra"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() =>
+                  setFontSize((size) => Math.min(MAX_FONT_SIZE, size + FONT_SIZE_STEP))
+                }
+                aria-label="Aumentar tamaño de letra"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>

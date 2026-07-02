@@ -44,7 +44,7 @@ export function ChordLegend({
   if (chords.length === 0) return null;
 
   return (
-    <div className="border-b border-border bg-surface">
+    <div className="border-t border-border bg-surface">
       <div className="flex items-center justify-between px-3 py-1">
         <span className="text-xs font-medium tracking-wide text-text-secondary uppercase">
           Acordes
