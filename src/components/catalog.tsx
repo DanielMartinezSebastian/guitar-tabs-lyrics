@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import type { SongSummary } from "@/lib/types";
 
 function normalize(value: string) {
@@ -14,9 +14,10 @@ function normalize(value: string) {
 
 interface CatalogProps {
   songs: SongSummary[];
+  canAddSongs?: boolean;
 }
 
-export function Catalog({ songs }: CatalogProps) {
+export function Catalog({ songs, canAddSongs = false }: CatalogProps) {
   const [query, setQuery] = useState("");
 
   const sortedSongs = useMemo(
@@ -36,15 +37,26 @@ export function Catalog({ songs }: CatalogProps) {
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-6">
-      <div className="relative mb-6">
-        <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-text-secondary" />
-        <input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Buscar por título o artista..."
-          className="w-full rounded-md border border-border bg-surface py-2.5 pr-3 pl-10 text-text-primary placeholder:text-text-secondary focus:ring-2 focus:ring-accent focus:outline-none"
-        />
+      <div className="mb-6 flex gap-3">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-text-secondary" />
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Buscar por título o artista..."
+            className="w-full rounded-md border border-border bg-surface py-2.5 pr-3 pl-10 text-text-primary placeholder:text-text-secondary focus:ring-2 focus:ring-accent focus:outline-none"
+          />
+        </div>
+        {canAddSongs && (
+          <Link
+            href="/admin/songs/new"
+            aria-label="Añadir canción"
+            className="flex items-center justify-center rounded-md border border-border bg-surface px-3 text-text-secondary transition-colors hover:text-accent"
+          >
+            <Plus className="h-5 w-5" />
+          </Link>
+        )}
       </div>
 
       {filteredSongs.length === 0 ? (

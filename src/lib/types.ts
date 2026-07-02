@@ -35,3 +35,19 @@ export interface ChordDiagram {
 }
 
 export type ChordDictionary = Record<string, ChordDiagram>;
+
+export interface AddVersionInput {
+  title: string;
+  artist: string;
+  instrument: Instrument;
+  label: string;
+  capo?: number;
+  tuning?: string;
+  content: string;
+}
+
+export interface AddVersionResult {
+  songId: string;
+  versionId: string;
+  missingChords: string[];
+}
