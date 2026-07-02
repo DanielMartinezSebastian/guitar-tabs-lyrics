@@ -1,18 +1,35 @@
 # 02 · Requisitos funcionales (v1)
 
-## Buscador de canciones
+## Catálogo y buscador
 
-- Búsqueda por título y/o artista, tolerante a mayúsculas/acentos.
+- Listado navegable de todas las canciones (ej. orden alfabético) como
+  pantalla de inicio, además del buscador.
+- Búsqueda por título y/o artista (no por letra en v1), tolerante a
+  mayúsculas/acentos.
 - Resultados instantáneos mientras se escribe (sin botón "buscar").
 - Si no hay resultados, mensaje claro (no pantalla vacía).
 
 ## Vista de canción (tab + letra)
 
-- Letra completa con acordes anotados en la posición correcta sobre el texto.
+- Letra completa con acordes anotados en la posición correcta sobre el texto,
+  usando el nombre del acorde en notación anglosajona (C, G, Am, G7...).
 - Tipografía monoespaciada o alineación que garantice que el acorde cae sobre
   la sílaba correcta en cualquier ancho de pantalla razonable.
 - Legible sosteniendo el móvil/tablet mientras se toca (contraste, tamaño de
-  fuente ajustable — *ver open-questions*).
+  fuente **ajustable** por el usuario).
+- **Autoscroll**: control play/pause que desplaza el texto automáticamente a
+  velocidad ajustable por el usuario, sin necesidad de audio ni
+  sincronización con la canción real.
+
+## Leyenda de acordes
+
+- Cada versión muestra una leyenda con el diagrama (dibujo del cifrado en el
+  mástil) de cada acorde único que aparece en ella.
+- La leyenda está visible por defecto, pero se puede ocultar/mostrar (no debe
+  ocupar espacio permanentemente si el usuario no la quiere).
+- Al pulsar/tocar un acorde anotado sobre la letra, se resalta ese acorde en
+  la leyenda (si está visible) para consultar su diagrama sin perder el sitio
+  en el texto.
 
 ## Pivote entre versiones
 

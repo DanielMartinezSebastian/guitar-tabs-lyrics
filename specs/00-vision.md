@@ -13,15 +13,22 @@ sociales irrelevantes, distrae del objetivo real: tocar y cantar bien.
 
 - **Guitarrista/ukulelista que también canta**, en formato solista o de
   cancionero personal (no una banda con arreglos complejos multi-instrumento).
-- Nivel intermedio: sabe leer acordes sobre letra, no necesita partitura ni
-  tablatura numérica de línea (TAB clásico de 6 líneas) — *a confirmar en
-  open-questions*.
+- Nivel intermedio: sabe leer acordes con nombre (Am, C, G7...) sobre la
+  letra; no necesita tablatura numérica de línea (TAB clásico de 6 líneas)
+  para toda la canción. Sí valora tener a mano el diagrama de cada acorde
+  usado en la canción como referencia rápida y opcional.
+- **Uso personal por ahora**: la app no está pensada para otros usuarios desde
+  el día uno (no hace falta onboarding ni gestión de cuentas). La interfaz sí
+  se prepara en español e inglés desde v1.
 
 ## Objetivos (in scope)
 
 - Encontrar una canción rápido (buscador por título/artista).
 - Leer la letra con acordes anotados de forma clara y legible en pantalla
-  (móvil/tablet apoyada mientras se toca).
+  (móvil/tablet apoyada mientras se toca), con el nombre del acorde colocado
+  exactamente donde cambia.
+- Consultar el diagrama de cualquier acorde usado en la canción sin perder el
+  sitio en la letra (leyenda de acordes, ver `02-features.md`).
 - Cambiar entre versiones disponibles de la misma canción (instrumento u
   otra variante) sin perder el punto de lectura.
 

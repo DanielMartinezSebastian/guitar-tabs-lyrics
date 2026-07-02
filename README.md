@@ -34,21 +34,26 @@ código de producto, revisa y completa los documentos en [`specs/`](specs/):
 4. [`specs/03-open-questions.md`](specs/03-open-questions.md) — preguntas
    pendientes, agrupadas por fase, que hay que resolver antes de implementar.
 
-## Stack (a confirmar)
+## Stack
 
-Aún no decidido — se fija tras resolver `specs/03-open-questions.md` (bloque
-"Stack técnico"). Candidato por defecto si no hay preferencia: **Vite + React
-+ TypeScript**, datos como JSON estático servido con la propia app (sin
-backend), desplegable en GitHub Pages/Vercel/Netlify.
+- **Next.js + TypeScript**, desplegado en **Vercel**.
+- Datos como JSON estático (ver `specs/01-data-model.md`), leídos a través de
+  una capa de acceso a datos agnóstica al almacenamiento (para poder
+  sustituirlos por un backend real más adelante sin tocar la UI).
+- **PWA / soporte offline desde v1.**
+- Diseño **móvil first** (uso principal: móvil/tablet apoyada mientras se
+  toca y canta).
+- Idioma de interfaz: **español e inglés**.
 
 ## Estructura propuesta
 
 ```
 specs/            Documentos de especificación (fuente de verdad del producto)
-data/             JSON de canciones/versiones (o public/data si hay bundler)
-src/              Código de la app (una vez arrancado el desarrollo)
+data/             JSON de canciones/versiones/diagramas de acorde (ver specs/01-data-model.md)
+src/ (o app/)     Código de la app Next.js
 ```
 
 ## Cómo contribuir / desarrollar
 
-Pendiente de definir hasta cerrar el stack técnico en `specs/`.
+Pendiente de arrancar el scaffold del proyecto (`create-next-app`) ahora que
+el stack y los specs de las fases 1-4 están cerrados.
