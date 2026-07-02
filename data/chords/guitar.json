@@ -6,5 +6,7 @@
   "G7": { "baseFret": 1, "frets": [3, 2, 0, 0, 0, 1] },
   "Em7": { "baseFret": 1, "frets": [0, 2, 0, 0, 0, 0] },
   "G": { "baseFret": 1, "frets": [3, 2, 0, 0, 0, 3] },
-  "Dsus4": { "baseFret": 1, "frets": ["x", "x", 0, 2, 3, 3] }
+  "Dsus4": { "baseFret": 1, "frets": ["x", "x", 0, 2, 3, 3] },
+  "B7": { "baseFret": 1, "frets": ["x", 2, 1, 2, 0, 2] },
+  "Cm": { "baseFret": 3, "frets": ["x", 3, 5, 5, 4, 3] }
 }
