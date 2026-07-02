@@ -42,9 +42,9 @@ código de producto, revisa y completa los documentos en [`specs/`](specs/):
 - Datos como JSON estático (ver `specs/01-data-model.md`), leídos a través de
   una capa de acceso a datos agnóstica al almacenamiento (para poder
   sustituirlos por un backend real más adelante sin tocar la UI).
-- **Tailwind CSS + shadcn/ui** para componentes, **svguitar** para diagramas
-  de acorde y **chordsheetjs** para parsear ChordPro (ver
-  `specs/04-visual-style.md`).
+- **Tailwind CSS** + componentes propios sobre **Radix UI** (patrón
+  shadcn/ui), **svguitar** para diagramas de acorde y un parser ChordPro
+  propio (ver `specs/04-visual-style.md`).
 - **PWA / soporte offline desde v1.**
 - Diseño **móvil first**, tema **oscuro** (uso principal: móvil/tablet
   apoyada mientras se toca y canta).

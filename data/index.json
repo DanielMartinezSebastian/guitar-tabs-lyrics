@@ -1,0 +1,34 @@
+[
+  {
+    "id": "hey-jude",
+    "title": "Hey Jude",
+    "artist": "The Beatles",
+    "versions": [
+      {
+        "id": "guitar",
+        "instrument": "guitar",
+        "label": "Guitarra - estándar",
+        "file": "hey-jude-guitar.json"
+      },
+      {
+        "id": "ukulele",
+        "instrument": "ukulele",
+        "label": "Ukelele - estándar",
+        "file": "hey-jude-ukulele.json"
+      }
+    ]
+  },
+  {
+    "id": "wonderwall",
+    "title": "Wonderwall",
+    "artist": "Oasis",
+    "versions": [
+      {
+        "id": "guitar",
+        "instrument": "guitar",
+        "label": "Guitarra - estándar",
+        "file": "wonderwall-guitar.json"
+      }
+    ]
+  }
+]

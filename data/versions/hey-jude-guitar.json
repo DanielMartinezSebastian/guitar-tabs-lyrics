@@ -1,0 +1,9 @@
+{
+  "songId": "hey-jude",
+  "id": "guitar",
+  "instrument": "guitar",
+  "label": "Guitarra - estándar",
+  "capo": 0,
+  "tuning": "standard",
+  "content": "[F]Hey Jude, don't make it [C7]bad\n[F]Take a sad song and make it [Bb]better\n\n[F]Remember to [C7]let her into your [F]heart\n[Bb]Then you can [F]start to make it [C7]better [F]"
+}

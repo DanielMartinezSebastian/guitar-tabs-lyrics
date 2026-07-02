@@ -21,8 +21,11 @@ para implementar la UI de forma consistente.
 - **svguitar** (o vexchords) — renderiza los diagramas de acorde de la
   leyenda como SVG a partir de datos simples (frets/fingers), en vez de
   dibujarlos a mano.
-- **chordsheetjs** — parsea el formato ChordPro ya elegido en
-  `01-data-model.md`.
+- **Parser ChordPro propio** (no `chordsheetjs`: es GPL-2.0, que podría
+  obligar a licenciar todo el proyecto como GPL si se distribuye). Nuestro
+  subconjunto de ChordPro es mínimo — solo `[Acorde]` inline, sin
+  directivas ni secciones — así que un parser propio de pocas líneas
+  (regex por línea) cubre el caso sin esa dependencia.
 - **Geist Sans / Geist Mono** (vía `next/font`, fuente open source de
   Vercel) — encaja de forma natural al desplegar ahí; fallback `Inter` /
   `ui-monospace`.
