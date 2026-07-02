@@ -3,16 +3,8 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { INSTRUMENT_OPTIONS, SongContentFields } from "./song-content-fields";
 import type { AddVersionResult, Instrument } from "@/lib/types";
-
-const INSTRUMENT_OPTIONS: { value: Instrument; label: string; defaultLabel: string }[] = [
-  { value: "guitar", label: "Guitarra", defaultLabel: "Guitarra - estándar" },
-  { value: "ukulele", label: "Ukelele", defaultLabel: "Ukelele - estándar" },
-  { value: "other", label: "Otro", defaultLabel: "" },
-];
-
-const inputClass =
-  "w-full rounded-md border border-border bg-surface px-3 py-2 text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent";
 
 export function AddSongForm() {
   const [title, setTitle] = useState("");
@@ -103,86 +95,30 @@ export function AddSongForm() {
         proyecto. Solo funciona ejecutando <code>npm run dev</code> en tu
         máquina — no está disponible en el despliegue de Vercel. Después de
         añadir canciones, haz commit y push de los cambios en{" "}
-        <code>data/</code> para que aparezcan también en producción.
+        <code>data/</code> para que aparezcan también en producción.{" "}
+        ¿Solo quieres tocarla ahora sin guardarla? Usa{" "}
+        <Link href="/preview" className="text-accent hover:text-accent-hover">
+          la vista previa
+        </Link>
+        .
       </p>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <label className="flex flex-col gap-1 text-sm text-text-secondary">
-          Título
-          <input
-            className={inputClass}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-sm text-text-secondary">
-          Artista
-          <input
-            className={inputClass}
-            value={artist}
-            onChange={(e) => setArtist(e.target.value)}
-            required
-          />
-        </label>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <label className="flex flex-col gap-1 text-sm text-text-secondary">
-          Instrumento
-          <select
-            className={inputClass}
-            value={instrument}
-            onChange={(e) => handleInstrumentChange(e.target.value as Instrument)}
-          >
-            {INSTRUMENT_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex flex-col gap-1 text-sm text-text-secondary">
-          Capo (opcional)
-          <input
-            className={inputClass}
-            type="number"
-            min={0}
-            value={capo}
-            onChange={(e) => setCapo(e.target.value)}
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-sm text-text-secondary">
-          Afinación (opcional)
-          <input
-            className={inputClass}
-            value={tuning}
-            onChange={(e) => setTuning(e.target.value)}
-            placeholder="standard"
-          />
-        </label>
-      </div>
-
-      <label className="flex flex-col gap-1 text-sm text-text-secondary">
-        Etiqueta de la versión
-        <input
-          className={inputClass}
-          value={label}
-          onChange={(e) => setLabel(e.target.value)}
-          required
-        />
-      </label>
-
-      <label className="flex flex-col gap-1 text-sm text-text-secondary">
-        Letra + acordes (ChordPro)
-        <textarea
-          className={`${inputClass} min-h-64 font-mono`}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder={"[F]Hey Jude, don't make it [C]bad\n[F]Take a sad song and make it [C]better"}
-          required
-        />
-      </label>
+      <SongContentFields
+        title={title}
+        onTitleChange={setTitle}
+        artist={artist}
+        onArtistChange={setArtist}
+        instrument={instrument}
+        onInstrumentChange={handleInstrumentChange}
+        label={label}
+        onLabelChange={setLabel}
+        capo={capo}
+        onCapoChange={setCapo}
+        tuning={tuning}
+        onTuningChange={setTuning}
+        content={content}
+        onContentChange={setContent}
+      />
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 

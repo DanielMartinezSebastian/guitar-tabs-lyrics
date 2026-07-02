@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Zap } from "lucide-react";
 import type { SongSummary } from "@/lib/types";
 
 function normalize(value: string) {
@@ -48,6 +48,13 @@ export function Catalog({ songs, canAddSongs = false }: CatalogProps) {
             className="w-full rounded-md border border-border bg-surface py-2.5 pr-3 pl-10 text-text-primary placeholder:text-text-secondary focus:ring-2 focus:ring-accent focus:outline-none"
           />
         </div>
+        <Link
+          href="/preview"
+          aria-label="Vista previa rápida"
+          className="flex items-center justify-center rounded-md border border-border bg-surface px-3 text-text-secondary transition-colors hover:text-accent"
+        >
+          <Zap className="h-5 w-5" />
+        </Link>
         {canAddSongs && (
           <Link
             href="/admin/songs/new"

@@ -55,7 +55,7 @@ export function ChordDiagram({
       .chord({ fingers, barres: [] })
       .draw();
 
-    return () => chart.clear();
+    return () => chart.remove();
   }, [diagram, strings]);
 
   return (

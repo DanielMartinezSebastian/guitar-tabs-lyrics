@@ -4,13 +4,17 @@ import { useEffect, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { ChordDiagram } from "./chord-diagram";
 import { Button } from "./ui/button";
-import type { ChordDictionary, Instrument } from "@/lib/types";
+import type { ChordDictionary, ChordDiagram as ChordDiagramData, Instrument } from "@/lib/types";
 
 const STRINGS_BY_INSTRUMENT: Record<Instrument, number> = {
   guitar: 6,
   ukulele: 4,
   other: 6,
 };
+
+// Referencia estable: si es un objeto nuevo en cada render, el efecto que
+// dibuja el SVG del acorde se re-dispara en cada re-render sin necesidad.
+const EMPTY_DIAGRAM: ChordDiagramData = { frets: [] };
 
 interface ChordLegendProps {
   chords: string[];
@@ -69,7 +73,7 @@ export function ChordLegend({
             >
               <ChordDiagram
                 name={chord}
-                diagram={dictionary[chord] ?? { frets: [] }}
+                diagram={dictionary[chord] ?? EMPTY_DIAGRAM}
                 strings={STRINGS_BY_INSTRUMENT[instrument]}
                 highlighted={chord === highlightedChord}
               />
