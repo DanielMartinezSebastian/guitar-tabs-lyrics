@@ -33,6 +33,8 @@ código de producto, revisa y completa los documentos en [`specs/`](specs/):
 3. [`specs/02-features.md`](specs/02-features.md) — requisitos funcionales.
 4. [`specs/03-open-questions.md`](specs/03-open-questions.md) — preguntas
    pendientes, agrupadas por fase, que hay que resolver antes de implementar.
+5. [`specs/04-visual-style.md`](specs/04-visual-style.md) — estilo visual
+   (referencias, tema, tipografía, layout).
 
 ## Stack
 
@@ -40,9 +42,12 @@ código de producto, revisa y completa los documentos en [`specs/`](specs/):
 - Datos como JSON estático (ver `specs/01-data-model.md`), leídos a través de
   una capa de acceso a datos agnóstica al almacenamiento (para poder
   sustituirlos por un backend real más adelante sin tocar la UI).
+- **Tailwind CSS + shadcn/ui** para componentes, **svguitar** para diagramas
+  de acorde y **chordsheetjs** para parsear ChordPro (ver
+  `specs/04-visual-style.md`).
 - **PWA / soporte offline desde v1.**
-- Diseño **móvil first** (uso principal: móvil/tablet apoyada mientras se
-  toca y canta).
+- Diseño **móvil first**, tema **oscuro** (uso principal: móvil/tablet
+  apoyada mientras se toca y canta).
 - Idioma de interfaz: **español e inglés**.
 
 ## Estructura propuesta
