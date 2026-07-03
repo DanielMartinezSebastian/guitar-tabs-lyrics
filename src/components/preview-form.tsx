@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, RotateCcw } from "lucide-react";
 import { Button } from "./ui/button";
 import { SongContentFields, INSTRUMENT_OPTIONS } from "./song-content-fields";
 import { ScrapeImport } from "./scrape-import";
@@ -104,19 +104,14 @@ export function PreviewForm() {
         />
 
         <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={!content.trim()}
-            onClick={handleNormalize}
-          >
-            Normalizar
-          </Button>
           {preNormalizeText !== null && (
-            <Button type="button" variant="outline" onClick={handleUndo}>
-              Deshacer
+            <Button type="button" title="Deshacer normalización" onClick={handleUndo}>
+              <RotateCcw className="h-4 w-4" />
             </Button>
           )}
+          <Button type="button" disabled={!content.trim()} onClick={handleNormalize}>
+            Normalizar
+          </Button>
         </div>
 
         <Button type="submit">Ver vista previa</Button>
