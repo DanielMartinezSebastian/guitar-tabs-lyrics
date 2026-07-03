@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { BookOpen, Guitar } from "lucide-react";
 import { SongReader } from "./song-reader";
 import { EditableSongContent } from "./editable-song-content";
 import { Button } from "./ui/button";
@@ -31,8 +32,27 @@ export function PreviewViewClient({ payload, dictionary }: PreviewViewClientProp
   return (
     <>
       <div className="flex justify-end border-b border-border px-4 py-2">
-        <Button variant="outline" size="sm" onClick={() => setEditing((value) => !value)}>
-          {editing ? "Volver a modo lectura" : "Asignar acordes"}
+        <Button
+          variant="outline"
+          size="sm"
+          className={
+            editing
+              ? "whitespace-nowrap"
+              : "whitespace-nowrap border-green-800 bg-green-950/40 text-green-400 hover:bg-green-900/50 hover:text-green-300"
+          }
+          onClick={() => setEditing((value) => !value)}
+        >
+          {editing ? (
+            <>
+              <BookOpen className="h-3.5 w-3.5" />
+              Modo lectura
+            </>
+          ) : (
+            <>
+              <Guitar className="h-3.5 w-3.5" />
+              Asignar acordes
+            </>
+          )}
         </Button>
       </div>
 

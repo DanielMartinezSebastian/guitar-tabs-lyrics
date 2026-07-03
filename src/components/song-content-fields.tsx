@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Guitar, Pencil } from "lucide-react";
 import { EditableSongContent } from "./editable-song-content";
 import { Button } from "./ui/button";
 import type { ChordDictionary, Instrument } from "@/lib/types";
@@ -143,9 +144,24 @@ export function SongContentFields({
               type="button"
               variant="outline"
               size="sm"
+              className={
+                assignMode
+                  ? "whitespace-nowrap"
+                  : "whitespace-nowrap border-green-800 bg-green-950/40 text-green-400 hover:bg-green-900/50 hover:text-green-300"
+              }
               onClick={() => setAssignMode((value) => !value)}
             >
-              {assignMode ? "Editar texto" : "Asignar acordes"}
+              {assignMode ? (
+                <>
+                  <Pencil className="h-3.5 w-3.5" />
+                  Editar texto
+                </>
+              ) : (
+                <>
+                  <Guitar className="h-3.5 w-3.5" />
+                  Asignar acordes
+                </>
+              )}
             </Button>
           )}
         </div>
