@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { SongContentFields, INSTRUMENT_OPTIONS } from "./song-content-fields";
 import { ScrapeImport } from "./scrape-import";
 import { decodePreviewPayload, encodePreviewPayload } from "@/lib/preview-encoding";
+import { normalize } from "@/lib/normalizers";
 import type { Instrument } from "@/lib/types";
 
 export function PreviewForm() {
@@ -28,11 +29,24 @@ export function PreviewForm() {
   );
   const [tuning, setTuning] = useState(initialPayload?.tuning ?? "");
   const [content, setContent] = useState(initialPayload?.content ?? "");
+  const [scrapeUrl, setScrapeUrl] = useState("");
+  const [preNormalizeText, setPreNormalizeText] = useState<string | null>(null);
 
   function handleInstrumentChange(value: Instrument) {
     setInstrument(value);
     const preset = INSTRUMENT_OPTIONS.find((option) => option.value === value);
     if (preset?.defaultLabel) setLabel(preset.defaultLabel);
+  }
+
+  function handleNormalize() {
+    setPreNormalizeText(content);
+    setContent(normalize(content, scrapeUrl));
+  }
+
+  function handleUndo() {
+    if (preNormalizeText === null) return;
+    setContent(preNormalizeText);
+    setPreNormalizeText(null);
   }
 
   function handleSubmit(event: FormEvent) {
@@ -70,7 +84,7 @@ export function PreviewForm() {
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <ScrapeImport onImported={setContent} currentText={content} />
+        <ScrapeImport onImported={setContent} onUrlChange={setScrapeUrl} />
 
         <SongContentFields
           title={title}
@@ -88,6 +102,22 @@ export function PreviewForm() {
           content={content}
           onContentChange={setContent}
         />
+
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            disabled={!content.trim()}
+            onClick={handleNormalize}
+          >
+            Normalizar
+          </Button>
+          {preNormalizeText !== null && (
+            <Button type="button" variant="outline" onClick={handleUndo}>
+              Deshacer
+            </Button>
+          )}
+        </div>
 
         <Button type="submit">Ver vista previa</Button>
       </form>

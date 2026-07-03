@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { INSTRUMENT_OPTIONS, SongContentFields } from "./song-content-fields";
 import { ScrapeImport } from "./scrape-import";
+import { normalize } from "@/lib/normalizers";
 import type { AddVersionResult, Instrument } from "@/lib/types";
 
 export function AddSongForm() {
@@ -18,11 +19,24 @@ export function AddSongForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AddVersionResult | null>(null);
+  const [scrapeUrl, setScrapeUrl] = useState("");
+  const [preNormalizeText, setPreNormalizeText] = useState<string | null>(null);
 
   function handleInstrumentChange(value: Instrument) {
     setInstrument(value);
     const preset = INSTRUMENT_OPTIONS.find((option) => option.value === value);
     if (preset?.defaultLabel) setLabel(preset.defaultLabel);
+  }
+
+  function handleNormalize() {
+    setPreNormalizeText(content);
+    setContent(normalize(content, scrapeUrl));
+  }
+
+  function handleUndo() {
+    if (preNormalizeText === null) return;
+    setContent(preNormalizeText);
+    setPreNormalizeText(null);
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -55,6 +69,7 @@ export function AddSongForm() {
       setCapo("");
       setTuning("");
       setContent("");
+      setPreNormalizeText(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error desconocido.");
     } finally {
@@ -104,7 +119,7 @@ export function AddSongForm() {
         .
       </p>
 
-      <ScrapeImport onImported={setContent} currentText={content} />
+      <ScrapeImport onImported={setContent} onUrlChange={setScrapeUrl} />
 
       <SongContentFields
         title={title}
@@ -124,6 +139,22 @@ export function AddSongForm() {
       />
 
       {error && <p className="text-sm text-red-400">{error}</p>}
+
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          disabled={!content.trim()}
+          onClick={handleNormalize}
+        >
+          Normalizar
+        </Button>
+        {preNormalizeText !== null && (
+          <Button type="button" variant="outline" onClick={handleUndo}>
+            Deshacer
+          </Button>
+        )}
+      </div>
 
       <Button type="submit" disabled={submitting}>
         {submitting ? "Guardando..." : "Guardar canción"}

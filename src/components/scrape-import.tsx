@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { fieldInputClass } from "./song-content-fields";
-import { normalize } from "@/lib/normalizers";
 
 const SECRET_STORAGE_KEY = "scrapeAccessSecret";
 
 interface ScrapeImportProps {
   onImported: (markdown: string) => void;
-  /** Texto actual del campo de contenido, para poder normalizarlo in situ. */
-  currentText: string;
+  /** Notifica al padre cuando cambia la URL, para poder normalizar con ella. */
+  onUrlChange?: (url: string) => void;
 }
 
 /**
@@ -20,17 +19,21 @@ interface ScrapeImportProps {
  * (SCRAPE_ACCESS_SECRET) porque la web es pública y sin login — esta caja la
  * pide una vez y la guarda en este navegador.
  */
-export function ScrapeImport({ onImported, currentText }: ScrapeImportProps) {
+export function ScrapeImport({ onImported, onUrlChange }: ScrapeImportProps) {
   const [url, setUrl] = useState("");
   const [secret, setSecret] = useState("");
   const [needsSecret, setNeedsSecret] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [preNormalizeText, setPreNormalizeText] = useState<string | null>(null);
 
   useEffect(() => {
     setSecret(window.localStorage.getItem(SECRET_STORAGE_KEY) ?? "");
   }, []);
+
+  function handleUrlChange(value: string) {
+    setUrl(value);
+    onUrlChange?.(value);
+  }
 
   function handleSecretChange(value: string) {
     setSecret(value);
@@ -54,24 +57,12 @@ export function ScrapeImport({ onImported, currentText }: ScrapeImportProps) {
       if (response.status === 401) setNeedsSecret(true);
       if (!response.ok) throw new Error(data.error ?? "No se pudo importar la página.");
       setNeedsSecret(false);
-      setPreNormalizeText(null);
       onImported(data.content as string);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error desconocido.");
     } finally {
       setLoading(false);
     }
-  }
-
-  function handleNormalize() {
-    setPreNormalizeText(currentText);
-    onImported(normalize(currentText, url));
-  }
-
-  function handleUndoNormalize() {
-    if (preNormalizeText === null) return;
-    onImported(preNormalizeText);
-    setPreNormalizeText(null);
   }
 
   return (
@@ -85,28 +76,13 @@ export function ScrapeImport({ onImported, currentText }: ScrapeImportProps) {
         <input
           type="url"
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => handleUrlChange(e.target.value)}
           placeholder="https://..."
           className={`${fieldInputClass} flex-1`}
         />
         <Button type="button" variant="outline" disabled={loading} onClick={handleFetch}>
           {loading ? "Importando..." : "Importar"}
         </Button>
-      </div>
-      <div className="flex gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          disabled={!currentText.trim()}
-          onClick={handleNormalize}
-        >
-          Normalizar
-        </Button>
-        {preNormalizeText !== null && (
-          <Button type="button" variant="outline" onClick={handleUndoNormalize}>
-            Deshacer
-          </Button>
-        )}
       </div>
       {needsSecret && (
         <label className="flex flex-col gap-1 text-sm text-text-secondary">
