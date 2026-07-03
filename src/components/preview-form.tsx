@@ -70,7 +70,7 @@ export function PreviewForm() {
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <ScrapeImport onImported={setContent} />
+        <ScrapeImport onImported={setContent} currentText={content} />
 
         <SongContentFields
           title={title}

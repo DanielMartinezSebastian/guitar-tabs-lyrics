@@ -104,7 +104,7 @@ export function AddSongForm() {
         .
       </p>
 
-      <ScrapeImport onImported={setContent} />
+      <ScrapeImport onImported={setContent} currentText={content} />
 
       <SongContentFields
         title={title}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isContentEditorEnabled } from "@/lib/content-editor";
 import { BrowserRenderingError, fetchPageAsMarkdown } from "@/lib/browser-rendering";
+import { cleanScrapedMarkdown } from "@/lib/scrape-clean";
 
 /**
  * En local (npm run dev) confiamos en el mismo límite que el resto del
@@ -49,7 +50,7 @@ export async function POST(request: Request) {
 
   try {
     const content = await fetchPageAsMarkdown(parsed.toString());
-    return NextResponse.json({ content });
+    return NextResponse.json({ content: cleanScrapedMarkdown(content) });
   } catch (err) {
     const message =
       err instanceof BrowserRenderingError ? err.message : "No se pudo importar la página.";
