@@ -105,11 +105,11 @@ export function PreviewForm() {
 
         <div className="flex gap-2">
           {preNormalizeText !== null && (
-            <Button type="button" title="Deshacer normalización" onClick={handleUndo}>
+            <Button type="button" variant="outline" size="icon" title="Deshacer normalización" onClick={handleUndo}>
               <RotateCcw className="h-4 w-4" />
             </Button>
           )}
-          <Button type="button" disabled={!content.trim()} onClick={handleNormalize}>
+          <Button type="button" variant="outline" className="flex-1 bg-surface hover:bg-border" disabled={!content.trim()} onClick={handleNormalize}>
             Normalizar
           </Button>
         </div>
