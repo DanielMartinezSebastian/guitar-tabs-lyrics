@@ -30,5 +30,18 @@
         "file": "wonderwall-guitar.json"
       }
     ]
+  },
+  {
+    "id": "creep",
+    "title": "creep",
+    "artist": "radiohead",
+    "versions": [
+      {
+        "id": "guitar",
+        "instrument": "guitar",
+        "label": "Guitarra - estándar",
+        "file": "creep-guitar.json"
+      }
+    ]
   }
 ]

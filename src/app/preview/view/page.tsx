@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, Pencil } from "lucide-react";
 import { notFound } from "next/navigation";
-import { SongReader } from "@/components/song-reader";
-import { extractChords, parseChordPro } from "@/lib/chordpro";
+import { PreviewViewClient } from "@/components/preview-view-client";
 import { decodePreviewPayload } from "@/lib/preview-encoding";
 import { songRepository } from "@/lib/song-repository";
 
@@ -18,8 +17,6 @@ export default async function PreviewViewPage({ searchParams }: PreviewViewPageP
   if (!payload) notFound();
 
   const dictionary = await songRepository.getChordDictionary(payload.instrument);
-  const lines = parseChordPro(payload.content);
-  const chords = extractChords(payload.content);
 
   return (
     <div className="flex flex-1 flex-col">
@@ -50,13 +47,7 @@ export default async function PreviewViewPage({ searchParams }: PreviewViewPageP
         </div>
       </header>
 
-      <SongReader
-        lines={lines}
-        chords={chords}
-        dictionary={dictionary}
-        instrument={payload.instrument}
-        capo={payload.capo}
-      />
+      <PreviewViewClient payload={payload} dictionary={dictionary} />
     </div>
   );
 }

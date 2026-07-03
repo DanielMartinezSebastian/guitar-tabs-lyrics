@@ -62,3 +62,62 @@ export function extractChords(content: string): string[] {
   }
   return [...seen];
 }
+
+export interface ChordWordUnit {
+  chord: string | null;
+  text: string;
+  isSpace: boolean;
+}
+
+/**
+ * Divide los tokens {chord, text} de una línea en unidades a nivel de
+ * palabra, para poder ofrecer edición interactiva palabra por palabra. Solo
+ * el primer fragmento no-espacio de cada token conserva el acorde del token
+ * (que es donde ChordPro lo sitúa); el resto de palabras del mismo token no
+ * llevan acorde.
+ */
+export function tokensToWords(tokens: ChordProToken[]): ChordWordUnit[] {
+  const words: ChordWordUnit[] = [];
+  for (const token of tokens) {
+    const parts = token.text.split(/(\s+)/).filter((part) => part !== "");
+    let pendingChord = token.chord;
+    for (const part of parts) {
+      const isSpace = /^\s+$/.test(part);
+      words.push({ chord: isSpace ? null : pendingChord, text: part, isSpace });
+      if (!isSpace) pendingChord = null;
+    }
+    if (parts.length === 0 && token.chord) {
+      words.push({ chord: token.chord, text: "", isSpace: false });
+    }
+  }
+  return words;
+}
+
+function wordsToLine(words: ChordWordUnit[]): string {
+  return words.map((word) => (word.chord ? `[${word.chord}]${word.text}` : word.text)).join("");
+}
+
+/**
+ * Devuelve el contenido ChordPro completo tras asignar (o quitar, pasando
+ * `chord: null`) un acorde a la palabra `wordIndex` de la línea `lineIndex`.
+ * No toca el resto del contenido, así que sigue siendo el mismo formato que
+ * ya persistimos en `data/versions/*.json`.
+ */
+export function setWordChord(
+  content: string,
+  lineIndex: number,
+  wordIndex: number,
+  chord: string | null
+): string {
+  const rawLines = content.split("\n");
+  const targetLine = rawLines[lineIndex];
+  if (targetLine === undefined) return content;
+
+  const [parsedLine] = parseChordPro(targetLine);
+  const words = tokensToWords(parsedLine.tokens);
+  if (!words[wordIndex]) return content;
+
+  words[wordIndex] = { ...words[wordIndex], chord: chord?.trim() || null };
+  rawLines[lineIndex] = wordsToLine(words);
+  return rawLines.join("\n");
+}

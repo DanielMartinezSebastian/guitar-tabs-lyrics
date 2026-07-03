@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { EditableSongContent } from "./editable-song-content";
+import { Button } from "./ui/button";
 import type { Instrument } from "@/lib/types";
 
 export const INSTRUMENT_OPTIONS: { value: Instrument; label: string; defaultLabel: string }[] = [
@@ -43,6 +46,8 @@ export function SongContentFields({
   content,
   onContentChange,
 }: SongContentFieldsProps) {
+  const [assignMode, setAssignMode] = useState(false);
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -112,16 +117,36 @@ export function SongContentFields({
         />
       </label>
 
-      <label className="flex flex-col gap-1 text-sm text-text-secondary">
-        Letra + acordes (ChordPro)
-        <textarea
-          className={`${fieldInputClass} min-h-64 font-mono`}
-          value={content}
-          onChange={(e) => onContentChange(e.target.value)}
-          placeholder={"[F]Hey Jude, don't make it [C]bad\n[F]Take a sad song and make it [C]better"}
-          required
-        />
-      </label>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between gap-2">
+          <label className="text-sm text-text-secondary" htmlFor="song-content-textarea">
+            Letra (los acordes en formato ChordPro son opcionales)
+          </label>
+          {content.trim() && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setAssignMode((value) => !value)}
+            >
+              {assignMode ? "Editar texto" : "Asignar acordes"}
+            </Button>
+          )}
+        </div>
+
+        {assignMode && content.trim() ? (
+          <EditableSongContent content={content} onContentChange={onContentChange} />
+        ) : (
+          <textarea
+            id="song-content-textarea"
+            className={`${fieldInputClass} min-h-64 font-mono`}
+            value={content}
+            onChange={(e) => onContentChange(e.target.value)}
+            placeholder={"Pega aquí la letra tal cual, con o sin acordes:\nHey Jude, don't make it bad\nTake a sad song and make it better\n\nO en formato ChordPro:\n[F]Hey Jude, don't make it [C]bad"}
+            required
+          />
+        )}
+      </div>
     </>
   );
 }
