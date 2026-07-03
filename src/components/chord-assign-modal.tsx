@@ -56,7 +56,6 @@ export function ChordAssignModal({
         </p>
 
         <input
-          autoFocus
           className={fieldInputClass}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
