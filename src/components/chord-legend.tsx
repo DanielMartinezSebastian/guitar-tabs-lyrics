@@ -45,7 +45,9 @@ export function ChordLegend({
     }
   }, [highlightedChord, visible]);
 
-  if (chords.length === 0) return null;
+  const knownChords = chords.filter((chord) => chord in dictionary);
+
+  if (knownChords.length === 0) return null;
 
   return (
     <div className="border-t border-border bg-surface">
@@ -64,7 +66,7 @@ export function ChordLegend({
       </div>
       {visible && (
         <div className="flex gap-4 overflow-x-auto px-3 pb-3">
-          {chords.map((chord) => (
+          {knownChords.map((chord) => (
             <div
               key={chord}
               ref={(el) => {
