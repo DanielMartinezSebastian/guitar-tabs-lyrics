@@ -6,7 +6,7 @@ import { ChordDiagram } from "./chord-diagram";
 import { Button } from "./ui/button";
 import type { ChordDictionary, ChordDiagram as ChordDiagramData, Instrument } from "@/lib/types";
 
-const STRINGS_BY_INSTRUMENT: Record<Instrument, number> = {
+export const STRINGS_BY_INSTRUMENT: Record<Instrument, number> = {
   guitar: 6,
   ukulele: 4,
   other: 6,

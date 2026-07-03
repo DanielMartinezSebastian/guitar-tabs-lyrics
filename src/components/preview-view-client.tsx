@@ -38,7 +38,12 @@ export function PreviewViewClient({ payload, dictionary }: PreviewViewClientProp
 
       {editing ? (
         <div className="flex-1 px-4 py-6">
-          <EditableSongContent content={content} onContentChange={handleContentChange} />
+          <EditableSongContent
+            content={content}
+            onContentChange={handleContentChange}
+            dictionary={dictionary}
+            instrument={payload.instrument}
+          />
         </div>
       ) : (
         <SongReader

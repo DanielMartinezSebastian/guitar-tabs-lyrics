@@ -43,5 +43,18 @@
         "file": "creep-guitar.json"
       }
     ]
+  },
+  {
+    "id": "test",
+    "title": "test",
+    "artist": "test",
+    "versions": [
+      {
+        "id": "guitar",
+        "instrument": "guitar",
+        "label": "Guitarra - estándar",
+        "file": "test-guitar.json"
+      }
+    ]
   }
 ]

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "./ui/button";
 import { SongContentFields, INSTRUMENT_OPTIONS } from "./song-content-fields";
+import { ScrapeImport } from "./scrape-import";
 import { decodePreviewPayload, encodePreviewPayload } from "@/lib/preview-encoding";
 import type { Instrument } from "@/lib/types";
 
@@ -69,6 +70,8 @@ export function PreviewForm() {
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <ScrapeImport onImported={setContent} />
+
         <SongContentFields
           title={title}
           onTitleChange={setTitle}

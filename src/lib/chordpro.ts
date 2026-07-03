@@ -72,9 +72,12 @@ export interface ChordWordUnit {
 /**
  * Divide los tokens {chord, text} de una línea en unidades a nivel de
  * palabra, para poder ofrecer edición interactiva palabra por palabra. Solo
- * el primer fragmento no-espacio de cada token conserva el acorde del token
- * (que es donde ChordPro lo sitúa); el resto de palabras del mismo token no
- * llevan acorde.
+ * el primer fragmento del token (sea palabra o hueco en blanco) conserva su
+ * acorde, que es donde ChordPro lo sitúa realmente; así un acorde "suelto"
+ * entre dos palabras (sin letra debajo) no se pierde, sino que queda anclado
+ * al hueco de espacio que le sigue. Si el token no tiene texto (línea en
+ * blanco, o dos marcadores de acorde pegados), se genera un hueco de ancho
+ * cero para poder seguir asignándole o cambiándole el acorde.
  */
 export function tokensToWords(tokens: ChordProToken[]): ChordWordUnit[] {
   const words: ChordWordUnit[] = [];
@@ -83,10 +86,10 @@ export function tokensToWords(tokens: ChordProToken[]): ChordWordUnit[] {
     let pendingChord = token.chord;
     for (const part of parts) {
       const isSpace = /^\s+$/.test(part);
-      words.push({ chord: isSpace ? null : pendingChord, text: part, isSpace });
-      if (!isSpace) pendingChord = null;
+      words.push({ chord: pendingChord, text: part, isSpace });
+      pendingChord = null;
     }
-    if (parts.length === 0 && token.chord) {
+    if (parts.length === 0) {
       words.push({ chord: token.chord, text: "", isSpace: false });
     }
   }
@@ -119,5 +122,21 @@ export function setWordChord(
 
   words[wordIndex] = { ...words[wordIndex], chord: chord?.trim() || null };
   rawLines[lineIndex] = wordsToLine(words);
+  return rawLines.join("\n");
+}
+
+/**
+ * Añade un hueco de acorde vacío al final de una línea (para empezar o
+ * continuar una secuencia de acordes sin letra, o para poder poner un acorde
+ * tras la última palabra). Es un no-op visual hasta que se le asigna un
+ * acorde de verdad: si se cancela sin asignar nada, `setWordChord` con
+ * `chord: null` lo vuelve a dejar sin rastro en el texto.
+ */
+export function appendChordSlot(content: string, lineIndex: number): string {
+  const rawLines = content.split("\n");
+  const currentLine = rawLines[lineIndex];
+  if (currentLine === undefined) return content;
+
+  rawLines[lineIndex] = currentLine ? `${currentLine} []` : "[]";
   return rawLines.join("\n");
 }

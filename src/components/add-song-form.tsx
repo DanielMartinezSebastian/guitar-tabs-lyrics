@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { INSTRUMENT_OPTIONS, SongContentFields } from "./song-content-fields";
+import { ScrapeImport } from "./scrape-import";
 import type { AddVersionResult, Instrument } from "@/lib/types";
 
 export function AddSongForm() {
@@ -102,6 +103,8 @@ export function AddSongForm() {
         </Link>
         .
       </p>
+
+      <ScrapeImport onImported={setContent} />
 
       <SongContentFields
         title={title}

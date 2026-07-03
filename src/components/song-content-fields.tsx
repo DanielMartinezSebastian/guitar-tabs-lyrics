@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditableSongContent } from "./editable-song-content";
 import { Button } from "./ui/button";
-import type { Instrument } from "@/lib/types";
+import type { ChordDictionary, Instrument } from "@/lib/types";
 
 export const INSTRUMENT_OPTIONS: { value: Instrument; label: string; defaultLabel: string }[] = [
   { value: "guitar", label: "Guitarra", defaultLabel: "Guitarra - estándar" },
@@ -47,6 +47,22 @@ export function SongContentFields({
   onContentChange,
 }: SongContentFieldsProps) {
   const [assignMode, setAssignMode] = useState(false);
+  const [dictionary, setDictionary] = useState<ChordDictionary>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/chords/${instrument}`)
+      .then((res) => (res.ok ? res.json() : {}))
+      .then((data) => {
+        if (!cancelled) setDictionary(data as ChordDictionary);
+      })
+      .catch(() => {
+        if (!cancelled) setDictionary({});
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [instrument]);
 
   return (
     <>
@@ -135,7 +151,12 @@ export function SongContentFields({
         </div>
 
         {assignMode && content.trim() ? (
-          <EditableSongContent content={content} onContentChange={onContentChange} />
+          <EditableSongContent
+            content={content}
+            onContentChange={onContentChange}
+            dictionary={dictionary}
+            instrument={instrument}
+          />
         ) : (
           <textarea
             id="song-content-textarea"
