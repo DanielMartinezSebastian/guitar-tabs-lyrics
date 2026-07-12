@@ -58,11 +58,25 @@ export function ScrapeImport({ onImported, onUrlChange, searchQuery }: ScrapeImp
         },
         body: JSON.stringify({ url }),
       });
-      const data = await response.json();
+
+      let data: { content?: string; error?: string };
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error(
+          `El servidor respondió sin JSON válido (HTTP ${response.status}). Puede que la petición haya superado el tiempo límite del servidor.`
+        );
+      }
+
       if (response.status === 401) setNeedsSecret(true);
-      if (!response.ok) throw new Error(data.error ?? "No se pudo importar la página.");
+      if (!response.ok) {
+        throw new Error(data.error ?? `No se pudo importar la página (HTTP ${response.status}).`);
+      }
+      if (!data.content?.trim()) {
+        throw new Error("La página se importó pero el contenido llegó vacío.");
+      }
       setNeedsSecret(false);
-      onImported(data.content as string);
+      onImported(data.content);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error desconocido.");
     } finally {
@@ -108,7 +122,11 @@ export function ScrapeImport({ onImported, onUrlChange, searchQuery }: ScrapeImp
           />
         </label>
       )}
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && (
+        <p className="rounded-md border border-red-400/30 bg-red-400/10 p-2 text-sm text-red-400">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

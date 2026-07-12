@@ -50,7 +50,17 @@ export async function POST(request: Request) {
 
   try {
     const content = await fetchPageAsMarkdown(parsed.toString());
-    return NextResponse.json({ content: cleanScrapedMarkdown(content) });
+    const cleaned = cleanScrapedMarkdown(content);
+    if (!cleaned) {
+      return NextResponse.json(
+        {
+          error:
+            "La página se renderizó pero quedó vacía tras limpiarla. Puede que el sitio bloquee el renderizado o que esa URL no tenga contenido.",
+        },
+        { status: 502 }
+      );
+    }
+    return NextResponse.json({ content: cleaned });
   } catch (err) {
     const message =
       err instanceof BrowserRenderingError ? err.message : "No se pudo importar la página.";
