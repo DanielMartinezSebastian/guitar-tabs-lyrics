@@ -32,19 +32,6 @@
     ]
   },
   {
-    "id": "creep",
-    "title": "creep",
-    "artist": "radiohead",
-    "versions": [
-      {
-        "id": "guitar",
-        "instrument": "guitar",
-        "label": "Guitarra - estándar",
-        "file": "creep-guitar.json"
-      }
-    ]
-  },
-  {
     "id": "test",
     "title": "test",
     "artist": "test",
