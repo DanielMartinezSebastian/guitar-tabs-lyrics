@@ -84,7 +84,11 @@ export function PreviewForm() {
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <ScrapeImport onImported={setContent} onUrlChange={setScrapeUrl} />
+        <ScrapeImport
+          onImported={setContent}
+          onUrlChange={setScrapeUrl}
+          searchQuery={`${title} ${artist}`}
+        />
 
         <SongContentFields
           title={title}

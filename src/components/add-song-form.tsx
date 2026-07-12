@@ -120,7 +120,11 @@ export function AddSongForm() {
         .
       </p>
 
-      <ScrapeImport onImported={setContent} onUrlChange={setScrapeUrl} />
+      <ScrapeImport
+        onImported={setContent}
+        onUrlChange={setScrapeUrl}
+        searchQuery={`${title} ${artist}`}
+      />
 
       <SongContentFields
         title={title}

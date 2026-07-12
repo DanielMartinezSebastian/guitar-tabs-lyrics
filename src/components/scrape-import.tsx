@@ -10,6 +10,8 @@ interface ScrapeImportProps {
   onImported: (markdown: string) => void;
   /** Notifica al padre cuando cambia la URL, para poder normalizar con ella. */
   onUrlChange?: (url: string) => void;
+  /** Título/artista actuales, para prellenar la búsqueda en Cifra Club. */
+  searchQuery?: string;
 }
 
 /**
@@ -19,8 +21,11 @@ interface ScrapeImportProps {
  * (SCRAPE_ACCESS_SECRET) porque la web es pública y sin login — esta caja la
  * pide una vez y la guarda en este navegador.
  */
-export function ScrapeImport({ onImported, onUrlChange }: ScrapeImportProps) {
+export function ScrapeImport({ onImported, onUrlChange, searchQuery }: ScrapeImportProps) {
   const [url, setUrl] = useState("");
+  const cifraClubSearchUrl = searchQuery?.trim()
+    ? `https://www.cifraclub.com/?q=${encodeURIComponent(searchQuery.trim())}`
+    : "https://www.cifraclub.com/";
   const [secret, setSecret] = useState("");
   const [needsSecret, setNeedsSecret] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -72,6 +77,14 @@ export function ScrapeImport({ onImported, onUrlChange }: ScrapeImportProps) {
         Revísalo y edítalo antes de guardar — recuerda que el contenido de
         otras páginas puede tener derechos de autor.
       </p>
+      <a
+        href={cifraClubSearchUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-fit text-sm text-accent hover:text-accent-hover"
+      >
+        Buscar en Cifra Club ↗
+      </a>
       <div className="flex gap-2">
         <input
           type="url"
