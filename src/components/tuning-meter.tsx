@@ -41,7 +41,11 @@ export function TuningMeter({ cents }: TuningMeterProps) {
         ))}
         <div
           className={cn(
-            "absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full transition-[left,background-color] duration-150 ease-out",
+            "absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-150",
+            // La aguja sigue el pitch en vivo sin animación (instantánea, como
+            // una aguja analógica real). Solo al perder la señal y volver al
+            // centro se anima, para que ese regreso se sienta natural y no un salto.
+            !hasSignal && "transition-[left] duration-500 ease-out",
             indicatorClasses
           )}
           style={{ left: `${percent}%` }}
