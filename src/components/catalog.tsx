@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Plus, Search, Zap } from "lucide-react";
+import { AudioLines, Plus, Search, Zap } from "lucide-react";
 import type { SongSummary } from "@/lib/types";
 
 function normalize(value: string) {
@@ -87,7 +87,14 @@ export function Catalog({ songs, canAddSongs = false }: CatalogProps) {
         </ul>
       )}
 
-      <footer className="mt-10 flex justify-center">
+      <footer className="mt-10 flex flex-col items-center gap-4">
+        <Link
+          href="/tuner"
+          className="flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-text-secondary transition-colors hover:border-accent/50 hover:text-accent"
+        >
+          <AudioLines className="h-4 w-4" />
+          Afinador
+        </Link>
         <a
           href="https://github.com/DanielMartinezSebastian/guitar-tabs-lyrics"
           target="_blank"
